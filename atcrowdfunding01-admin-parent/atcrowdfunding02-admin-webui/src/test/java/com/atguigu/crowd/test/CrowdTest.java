@@ -18,51 +18,59 @@ import com.atguigu.crowd.mapper.AdminMapper;
 import com.atguigu.crowd.service.api.AdminService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-persist-mybatis.xml","classpath:spring-persist-tx.xml"})
+@ContextConfiguration(locations = { "classpath:spring-persist-mybatis.xml", "classpath:spring-persist-tx.xml" })
 public class CrowdTest {
-	
+
 	@Autowired
 	private DataSource dataSource;
-	
+
 	@Autowired
 	private AdminMapper adminMapper;
-	
+
 	@Autowired
 	private AdminService adminService;
-	
+
+	@Test
+	public void Test() {
+		for (int i = 0; i < 238; i++) {
+			adminMapper.insert(
+					new Admin(null, "loginAcct" + i, "userPswd" + i, "userName" + i, "email" + i, "createTime" + i));
+		}
+	}
+
 	@Test
 	public void testTx() {
 		Admin admin = new Admin(null, "jerry", "123456", "杰瑞", "jerry@qq.com", null);
 		adminService.saveAdmin(admin);
 	}
-	
+
 	@Test
 	public void testLog() {
 		Logger logger = LoggerFactory.getLogger(CrowdTest.class);
 		logger.debug("Hello I am Debug level!!!");
 		logger.debug("Hello I am Debug level!!!");
 		logger.debug("Hello I am Debug level!!!");
-		
+
 		logger.info("Info level!!!");
 		logger.info("Info level!!!");
 		logger.info("Info level!!!");
-		
+
 		logger.warn("Warn level!!!");
 		logger.warn("Warn level!!!");
 		logger.warn("Warn level!!!");
-		
+
 		logger.error("Error level!!!");
 		logger.error("Error level!!!");
 		logger.error("Error level!!!");
 	}
-	
+
 	@Test
 	public void testInsertAdmin() {
 		Admin admin = new Admin(null, "tom", "123123", "汤姆", "tom@qq.com", null);
 		int count = adminMapper.insert(admin);
-		System.out.println("受影响的行数="+count);
+		System.out.println("受影响的行数=" + count);
 	}
-	
+
 	@Test
 	public void testConnection() throws SQLException {
 		Connection connection = dataSource.getConnection();
